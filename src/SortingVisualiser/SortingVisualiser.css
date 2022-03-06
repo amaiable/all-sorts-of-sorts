@@ -1,0 +1,39 @@
+.app-container {
+    height: 100%;
+    background-color: black;
+}
+
+.bar-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10%;
+    height: 80%;
+}
+
+.sort-button {
+    margin: 10px 10px;
+    /*background-color: white !important;*/
+    /*border-color: white !important;*/
+    /*color: black !important;*/
+    width: 10%;
+    word-wrap: break-word;
+}
+
+.overwrite-display-flex {
+    display: block !important;
+}
+
+.vertical-bar {
+    width: .5%;
+    background-color: #BD8BDD;
+    display: inline-block;
+    margin: 0 1px;
+}
+
+.logo {
+    width: 20%;
+}
+
+.form-input {
+    width: 20% !important;
+}
