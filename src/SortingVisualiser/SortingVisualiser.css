@@ -9,6 +9,7 @@
     padding-top: 10%;
     height: 80%;
     /*position: relative;*/
+    background-color: black;
 }
 
 .vertical-bar {
@@ -25,7 +26,10 @@
 }
 
 .number-input {
-    width: 15%;
+    width: 15% !important;
+    display: inline-block !important;
+    margin: 10px;
+    padding-bottom: 8px !important;
 }
 
 .sort-button {
@@ -33,8 +37,13 @@
     /*background-color: white !important;*/
     /*border-color: white !important;*/
     /*color: black !important;*/
-    width: 10%;
-    word-wrap: break-word;
+    width: 15%;
+    height: 50%;
+    /*word-wrap: break-word;*/
+}
+
+#generate-values-btn {
+    width: 20%;
 }
 
 .overwrite-display-flex {
@@ -47,4 +56,9 @@
 
 .form-input {
     width: 20% !important;
+}
+
+#pause-btn {
+    background-color: red;
+    border-color: red;
 }

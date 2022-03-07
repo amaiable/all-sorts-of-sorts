@@ -31,30 +31,21 @@ export default class SortingVisualiser extends React.Component {
 
         let numBars = document.getElementById("num-bars").value;
         if (numBars === "") {
-            numBars = "50";
+            numBars = "100";
         }
 
-        try {
-            numBars = parseInt(numBars);
-        }
-        catch (e) {
-            alert("You need to enter in a number");
-            return;
-        }
+        numBars = parseInt(numBars);
 
         numBars = Math.min(100, numBars);
-        numBars = Math.max(0, numBars);
+        numBars = Math.max(1, numBars);
 
         for (let i = 0; i < numBars; i++) {
-            // newValues.push(Math.floor(Math.random() * (500 - 5) + 5));  // Formula used for uniformly picking numbers between 4 and 500
             newValues.push(Math.floor(Math.random() * (90 - 5) + 5));
         }
         this.setState({
             valuesToSort: newValues
         });
     };
-
-
 
     pause() {
         // this.state.timeouts.forEach((id) => clearTimeout(id));
@@ -71,16 +62,13 @@ export default class SortingVisualiser extends React.Component {
     setDelayInterval() {
         let chosenInterval = document.getElementById("delay-interval").value;
         if (chosenInterval === "") {
-            chosenInterval = "2.5";
+            chosenInterval = "5";
         }
 
-        try {
-            chosenInterval = parseFloat(chosenInterval)
-        }
-        catch (e) {
-            alert("You need to enter in a float");
-            return;
-        }
+        chosenInterval = parseFloat(chosenInterval)
+
+        chosenInterval = Math.min(2000, chosenInterval);
+        chosenInterval = Math.max(1, chosenInterval);
 
         this.state.delayInterval = chosenInterval;
     }
@@ -243,16 +231,13 @@ export default class SortingVisualiser extends React.Component {
                 <Navbar bg="dark">
                     <Navbar.Brand><img className="logo" src="/logo_transparent_cropped.png" /></Navbar.Brand>
                     <Container className="overwrite-display-flex">
-                        {/*<Form>
-                            <Form.Control className="number-input" type="number" min="1" max="100" default-value="100" id="num-bars" placeholder="Number of Bars" />
-                        </Form>*/}
-                        <input type="number" className="number-input" min="1" max="100" id="num-bars" placeholder="Number of Bars" />
-                        <Button className="sort-button" onClick={() => this.resetValues()}>New Values</Button>
+                        <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
+                        <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button> <br />
+                        <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="2000" placeholder="Animation Speed" />
                         <Button className="sort-button" onClick={() => this.mergeSort()}>Merge Sort</Button>
                         <Button className="sort-button" onClick={() => this.selectionSort()}>Selection Sort</Button>
                         <Button className="sort-button" onClick={() => this.insertionSort()}>Insertion Sort</Button>
-                        <input type="number" className="number-input" min="1" max="2000" id="delay-interval" placeholder="Animation Speed" />
-                        <Button className="sort-button" onClick={() => this.pause()}>Pause</Button>
+                        <Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>
                     </Container>
                 </Navbar>
                 <div className="bar-container">

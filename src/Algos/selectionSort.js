@@ -1,5 +1,5 @@
 /* 
-Selection Sort pseudocode from my introduction to CS class
+Selection Sort pseudocode
 def selection_sort(array):
     n = length of array
     for (i=0, i<n, i++):

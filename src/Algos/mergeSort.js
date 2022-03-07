@@ -1,5 +1,5 @@
 /* 
-Merge Sort pseudocode with auxiliary array from my introduction to CS class
+Merge Sort with auxiliary array pseudocode
 def merge_sort(array):
     aux_array = new array with same length as array to be sorted
     start_index = 0  # First index of array

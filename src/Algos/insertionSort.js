@@ -1,5 +1,5 @@
 /* 
-Insertion Sort pseudocode from my introduction to CS class
+Insertion Sort pseudocode
 def insertion_sort(array):
     n = length of the array
     for (mark=1, mark<n, mark++):
