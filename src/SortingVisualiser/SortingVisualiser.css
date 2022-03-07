@@ -8,6 +8,24 @@
     margin-right: auto;
     padding-top: 10%;
     height: 80%;
+    /*position: relative;*/
+}
+
+.vertical-bar {
+    width: .5%;
+    background-color: #BD8BDD;
+    display: inline-block;
+    margin: 0 1px;
+    /*position: absolute;*/
+}
+
+.invisible-bar {
+    width: 0px;
+    margin: 0 0;
+}
+
+.number-input {
+    width: 15%;
 }
 
 .sort-button {
@@ -21,13 +39,6 @@
 
 .overwrite-display-flex {
     display: block !important;
-}
-
-.vertical-bar {
-    width: .5%;
-    background-color: #BD8BDD;
-    display: inline-block;
-    margin: 0 1px;
 }
 
 .logo {

@@ -47,7 +47,6 @@ function findMin(array, mark, colourChanges, heightChanges) {
 }
 
 function swapElements(array, indexA, indexB, colourChanges, heightChanges) {
-    let iterationSwap = [];
     heightChanges.push([indexA, indexB, array[indexB], array[indexA]]);
 
     const temp = array[indexB];

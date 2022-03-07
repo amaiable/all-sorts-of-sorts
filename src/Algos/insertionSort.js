@@ -9,6 +9,15 @@ def insertion_sort(array):
             array[i + 1] = array[i]  # Shift everything over
             i -= 1
         array[i + 1] = temp
+
+Needs to be modified because the visualisation will involve swaps (like reverse bubble sort) instead of using a temp variable to store it
+def insertion_sort(array):
+    n = length of the array
+    for (mark=1, mark<n, mark++):
+        j = mark
+        while (j > 0 and array[j - 1] > array[j]):
+            swap array[j] with array[j - 1]
+            j -= 1
 */
 
 export function performInsertionSort(array) {
@@ -16,26 +25,27 @@ export function performInsertionSort(array) {
     const heightChanges = [];
 
     const n = array.length;
-    for (let mark = 0; mark < n; mark++) {
-        let temp = array[mark];
-        let i = mark - 1;
+    for (let mark = 1; mark < n; mark++) {
         let iterationComparisons = [];
-        let iterationSwaps = [];
-        while (i >= 0 and array[i] > temp) {
-            iterationComparisons.push(i);
-            array[i + 1] = array[i];
-            i -= 1;
-        }
-        array[i + 1] = temp;
-    }
 
+        let j = mark;
+
+        heightChanges.push([]);
+        colourChanges.push([]);
+
+        while (j > 0 && array[j - 1] > array[j]) {
+            swapElements(array, j, j-1, colourChanges, heightChanges);
+            j -= 1;
+        }
+    }
     return [colourChanges, heightChanges];
 }
 
 
 function swapElements(array, indexA, indexB, colourChanges, heightChanges) {
-    let iterationSwap = [];
-    heightChanges.push([indexA, indexB, array[indexB], array[indexA]]);
+    const currIter = heightChanges.length - 1;
+    heightChanges[currIter].push([indexA, indexB, array[indexB], array[indexA]]);
+    colourChanges[currIter].push(indexB);
 
     const temp = array[indexB];
     array[indexB] = array[indexA];
