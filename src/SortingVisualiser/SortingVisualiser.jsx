@@ -271,6 +271,8 @@ export default class SortingVisualiser extends React.Component {
 
     render() {
         const values = this.state.valuesToSort;
+        const numberOfBars = values.length;
+        const width = Math.min(20, 80/numberOfBars);
 
         return (
             <div className="app-container">
@@ -288,7 +290,7 @@ export default class SortingVisualiser extends React.Component {
                 </Navbar>
                 <div className="bar-container">
                     {values.map((value, index) => 
-                        <div className="vertical-bar" key={index} style={{height: `${value}%`}} />
+                        <div className="vertical-bar" key={index} style={{height: `${value}%`, width: `${width}%`}} />
                     )}
                     <div className="vertical-bar invisible invisible-bar" style={{height: "100%"}} />
                 </div>
