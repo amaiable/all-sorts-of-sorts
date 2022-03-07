@@ -28,6 +28,10 @@ export default class SortingVisualiser extends React.Component {
 
     resetValues() {  // Gives us a fresh randomised array
         this.pause();
+        if (this.state.sortsDisabled) {
+            this.enableButtons();
+        }
+
         const newValues = [];
 
         let numBars = document.getElementById("num-bars").value;
@@ -44,8 +48,7 @@ export default class SortingVisualiser extends React.Component {
             newValues.push(Math.floor(Math.random() * (100 - 5) + 5));
         }
         this.setState({
-            valuesToSort: newValues,
-            sortsDisabled: false
+            valuesToSort: newValues
         });
     };
 
@@ -86,6 +89,13 @@ export default class SortingVisualiser extends React.Component {
         // setTimeout(() => {
         //     this.setState({sortsDisabled: false})
         // }, length);
+        this.disableButtons();
+        setTimeout(() => {
+            this.enableButtons();
+        }, length);
+    }
+
+    disableButtons() {
         this.state.sortsDisabled = true;
         let mergeSortStyle = document.getElementById("merge-sort").style;
         mergeSortStyle.opacity = .5;
@@ -96,15 +106,19 @@ export default class SortingVisualiser extends React.Component {
         let insertionSortStyle = document.getElementById("insertion-sort").style;
         insertionSortStyle.opacity = .5;
         insertionSortStyle["pointer-events"] = "none";
-        setTimeout(() => {
-            this.state.sortsDisabled = false;
-            mergeSortStyle.opacity = 1;
-            mergeSortStyle["pointer-events"] = "auto";
-            selectionSortStyle.opacity = 1;
-            selectionSortStyle["pointer-events"] = "auto";
-            insertionSortStyle.opacity = 1;
-            insertionSortStyle["pointer-events"] = "auto";
-        }, length);
+    }
+
+    enableButtons() {
+        this.state.sortsDisabled = false;
+        let mergeSortStyle = document.getElementById("merge-sort").style;
+        mergeSortStyle.opacity = 1;
+        mergeSortStyle["pointer-events"] = "auto";
+        let selectionSortStyle = document.getElementById("selection-sort").style;
+        selectionSortStyle.opacity = 1;
+        selectionSortStyle["pointer-events"] = "auto";
+        let insertionSortStyle = document.getElementById("insertion-sort").style;
+        insertionSortStyle.opacity = 1;
+        insertionSortStyle["pointer-events"] = "auto";
     }
 
     mergeSort() {  // Performs animations for merge sort

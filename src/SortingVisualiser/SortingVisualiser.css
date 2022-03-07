@@ -38,7 +38,8 @@
     /*color: black !important;*/
     width: 15%;
     height: 50%;
-    /*word-wrap: break-word;*/
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 #generate-values-btn {
