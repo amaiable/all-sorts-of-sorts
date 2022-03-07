@@ -18,6 +18,7 @@ export default class SortingVisualiser extends React.Component {
             timeouts: [],
             barNumber: 100,
             delayInterval: 10,
+            sortsDisabled: true,
         }
     };
 
@@ -40,15 +41,15 @@ export default class SortingVisualiser extends React.Component {
         numBars = Math.max(1, numBars);
 
         for (let i = 0; i < numBars; i++) {
-            newValues.push(Math.floor(Math.random() * (90 - 5) + 5));
+            newValues.push(Math.floor(Math.random() * (100 - 5) + 5));
         }
         this.setState({
-            valuesToSort: newValues
+            valuesToSort: newValues,
+            sortsDisabled: false
         });
     };
 
-    pause() {
-        // this.state.timeouts.forEach((id) => clearTimeout(id));
+    pause() {  // Clears all queued timeouts and resets all bars to purple
         for (let i = 0; i < this.state.timeouts.length; i++) {
             clearTimeout(this.state.timeouts[i]);
         }
@@ -59,10 +60,10 @@ export default class SortingVisualiser extends React.Component {
         }
     }
 
-    setDelayInterval() {
+    setDelayInterval() {  // Parses the input into a float to determine delay interval
         let chosenInterval = document.getElementById("delay-interval").value;
         if (chosenInterval === "") {
-            chosenInterval = "5";
+            chosenInterval = "2";
         }
 
         chosenInterval = parseFloat(chosenInterval)
@@ -73,13 +74,28 @@ export default class SortingVisualiser extends React.Component {
         this.state.delayInterval = chosenInterval;
     }
 
-    runBeforeSort() {
+    runBeforeSort() {  // Required preprocessing
         this.pause();
         this.setDelayInterval();
+        // this.state.savedState = [...this.state.valuesToSort];
+        // console.log("Saved state", this.state.savedState);
     }
-    
 
-    mergeSort() {
+    disableSorts(length) {  // TODO: Using bandage solution currently, fix later using setState and React disabled property
+        // this.setState({sortsDisabled: true})
+        // setTimeout(() => {
+        //     this.setState({sortsDisabled: false})
+        // }, length);
+        this.state.sortsDisabled = true;
+        setTimeout(() => {
+            this.state.sortsDisabled = false;
+        }, length);
+    }
+
+    mergeSort() {  // Performs animations for merge sort
+        if (this.state.sortsDisabled) {
+            return;
+        }
         this.runBeforeSort();
         const [colourChanges, heightChanges] = performMergeSort(this.state.valuesToSort);
         const n = colourChanges.length;  // Should be the same for height changes
@@ -99,6 +115,7 @@ export default class SortingVisualiser extends React.Component {
             }, delayMultiplier * this.state.delayInterval));
             delayMultiplier += 2;
 
+
             this.state.timeouts.push(setTimeout(() => {
                 barA.backgroundColor = purple;
                 barB.backgroundColor = purple;
@@ -112,9 +129,16 @@ export default class SortingVisualiser extends React.Component {
             }, delayMultiplier * this.state.delayInterval));
             delayMultiplier += 2;
         }
+
+        let disableSortsLength = delayMultiplier * this.state.delayInterval;
+        this.disableSorts(disableSortsLength);
+
     };
 
-    selectionSort() {
+    selectionSort() {  // Performs animations for selection sort
+        if (this.state.sortsDisabled) {
+            return;
+        }
         this.runBeforeSort();
         const [colourChanges, heightChanges] = performSelectionSort(this.state.valuesToSort);
         const n = colourChanges.length;
@@ -154,9 +178,15 @@ export default class SortingVisualiser extends React.Component {
             }, delayMultiplier * this.state.delayInterval + stickyColour));
             delayMultiplier += 1;
         }
+
+        let disableSortsLength = delayMultiplier * this.state.delayInterval + stickyColour;
+        this.disableSorts(disableSortsLength);
     };
 
-    insertionSort() {
+    insertionSort() {  // Performs animations for insertion sort
+        if (this.state.sortsDisabled) {
+            return;
+        }
         this.runBeforeSort();
         const [colourChanges, heightChanges] = performInsertionSort(this.state.valuesToSort);
         const n = colourChanges.length;
@@ -217,10 +247,11 @@ export default class SortingVisualiser extends React.Component {
                     barStyle.backgroundColor = purple;
                 }, delayMultiplier * this.state.delayInterval + ((j === m - 1) ? stickyColour : 0)));
                 delayMultiplier += 1;
-                
             }
             
         }
+        let disableSortsLength = delayMultiplier * this.state.delayInterval + stickyColour;
+        this.disableSorts(disableSortsLength);
     }
 
     render() {
@@ -234,10 +265,10 @@ export default class SortingVisualiser extends React.Component {
                         <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
                         <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button> <br />
                         <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="2000" placeholder="Animation Speed" />
-                        <Button className="sort-button" onClick={() => this.mergeSort()}>Merge Sort</Button>
-                        <Button className="sort-button" onClick={() => this.selectionSort()}>Selection Sort</Button>
-                        <Button className="sort-button" onClick={() => this.insertionSort()}>Insertion Sort</Button>
-                        <Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>
+                        <Button className="sort-button" onClick={() => this.mergeSort()} disabled={this.state.sortsDisabled}>Merge Sort</Button>
+                        <Button className="sort-button" onClick={() => this.selectionSort()} disabled={this.state.sortsDisabled}>Selection Sort</Button>
+                        <Button className="sort-button" onClick={() => this.insertionSort()} disabled={this.state.sortsDisabled}>Insertion Sort</Button>
+                        {/*<Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>*/}
                     </Container>
                 </Navbar>
                 <div className="bar-container">
