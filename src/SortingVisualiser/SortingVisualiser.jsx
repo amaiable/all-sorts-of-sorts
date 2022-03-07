@@ -87,8 +87,17 @@ export default class SortingVisualiser extends React.Component {
         //     this.setState({sortsDisabled: false})
         // }, length);
         this.state.sortsDisabled = true;
+        let mergeSortStyle = document.getElementById("merge-sort").style;
+        mergeSortStyle.opacity = .5;
+        let selectionSortStyle = document.getElementById("selection-sort").style;
+        selectionSortStyle.opacity = .5;
+        let insertionSortStyle = document.getElementById("insertion-sort").style;
+        insertionSortStyle.opacity = .5;
         setTimeout(() => {
             this.state.sortsDisabled = false;
+            mergeSortStyle.opacity = 1;
+            selectionSortStyle.opacity = 1;
+            insertionSortStyle.opacity = 1;
         }, length);
     }
 
@@ -265,9 +274,9 @@ export default class SortingVisualiser extends React.Component {
                         <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
                         <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button> <br />
                         <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="2000" placeholder="Animation Speed" />
-                        <Button className="sort-button" onClick={() => this.mergeSort()} disabled={this.state.sortsDisabled}>Merge Sort</Button>
-                        <Button className="sort-button" onClick={() => this.selectionSort()} disabled={this.state.sortsDisabled}>Selection Sort</Button>
-                        <Button className="sort-button" onClick={() => this.insertionSort()} disabled={this.state.sortsDisabled}>Insertion Sort</Button>
+                        <Button id="merge-sort" className="sort-button" onClick={() => this.mergeSort()} disabled={this.state.sortsDisabled}>Merge Sort</Button>
+                        <Button id="selection-sort" className="sort-button" onClick={() => this.selectionSort()} disabled={this.state.sortsDisabled}>Selection Sort</Button>
+                        <Button id="insertion-sort" className="sort-button" onClick={() => this.insertionSort()} disabled={this.state.sortsDisabled}>Insertion Sort</Button>
                         {/*<Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>*/}
                     </Container>
                 </Navbar>
