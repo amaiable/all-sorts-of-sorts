@@ -19,7 +19,7 @@ export default class SortingVisualiser extends React.Component {
             valuesToSort: [],  // Main sorting array
             timeouts: [],  // Stores all queued timeouts so we can clear them if necessary
             barNumber: 100,  // Default number of bars
-            delayInterval: 2,  // Default time interval
+            delayInterval: 9,  // Default time interval
             sortsDisabled: false,  // Should not be disabled by default
         }
     };
@@ -68,7 +68,7 @@ export default class SortingVisualiser extends React.Component {
     setDelayInterval() {  // Parses the input into a float to determine delay interval
         let chosenInterval = document.getElementById("delay-interval").value;
         if (chosenInterval === "") {  // If input is empty, use default value of 2
-            chosenInterval = "2";
+            chosenInterval = "9";
         }
 
         chosenInterval = parseFloat(chosenInterval)  // Input comes in as a string
