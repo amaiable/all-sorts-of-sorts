@@ -89,13 +89,13 @@ export default class SortingVisualiser extends React.Component {
         // setTimeout(() => {
         //     this.setState({sortsDisabled: false})
         // }, length);
-        this.disableButtons();
+        this.disableButtons(); // Disables buttons
         setTimeout(() => {
-            this.enableButtons();
+            this.enableButtons();  // Re-enables buttons after length milliseconds
         }, length);
     }
 
-    disableButtons() {
+    disableButtons() {  // Changes state and opacity / pointer-events for buttons
         this.state.sortsDisabled = true;
         let mergeSortStyle = document.getElementById("merge-sort").style;
         mergeSortStyle.opacity = .5;
@@ -108,7 +108,7 @@ export default class SortingVisualiser extends React.Component {
         insertionSortStyle["pointer-events"] = "none";
     }
 
-    enableButtons() {
+    enableButtons() {  // Re-enables buttons and reverts all style changes
         this.state.sortsDisabled = false;
         let mergeSortStyle = document.getElementById("merge-sort").style;
         mergeSortStyle.opacity = 1;
