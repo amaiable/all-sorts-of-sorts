@@ -14,17 +14,28 @@ export default class SortingVisualiser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            valuesToSort: [],
-            timeouts: [],
-            barNumber: 100,
-            delayInterval: 10,
-            sortsDisabled: true,
+            valuesToSort: [],  // Main sorting array
+            timeouts: [],  // Stores all queued timeouts so we can clear them if necessary
+            barNumber: 100,  // Default number of bars
+            delayInterval: 2,  // Default time interval
+            sortsDisabled: false,  // Should not be disabled by default
         }
     };
 
     componentDidMount() {  // Once we successfully render this component in, this runs
         this.resetValues();
     };
+
+    pause() {  // Clears all queued timeouts and resets all bars to purple
+        for (let i = 0; i < this.state.timeouts.length; i++) {  // Clear timeouts from our stored timeouts array
+            clearTimeout(this.state.timeouts[i]);
+        }
+        this.state.timeouts = [];  // We reset the timeouts array to save space
+        const verticalBars = document.getElementsByClassName("vertical-bar");
+        for (let i = 0; i < verticalBars.length; i++) {  // Change all bars back to purple (in case we paused while they were other colours)
+            verticalBars[i].style.backgroundColor = purple;
+        }
+    }
 
     resetValues() {  // Gives us a fresh randomised array
         this.pause();
@@ -35,49 +46,38 @@ export default class SortingVisualiser extends React.Component {
         const newValues = [];
 
         let numBars = document.getElementById("num-bars").value;
-        if (numBars === "") {
+        if (numBars === "") {  // If input is empty, use default value of 100
             numBars = "100";
         }
 
-        numBars = parseInt(numBars);
+        numBars = parseInt(numBars);  // Input comes in as a string
 
-        numBars = Math.min(100, numBars);
+        numBars = Math.min(100, numBars);  // 1 <= numBars <= 100
         numBars = Math.max(1, numBars);
 
-        for (let i = 0; i < numBars; i++) {
-            newValues.push(Math.floor(Math.random() * (100 - 5) + 5));
+        for (let i = 0; i < numBars; i++) {  // Pushing random numbers between 5 and 100 (represents percentage height of bar) 
+            newValues.push(Math.floor(Math.random() * (100 - 5 + 1) + 5));
         }
         this.setState({
             valuesToSort: newValues
         });
     };
 
-    pause() {  // Clears all queued timeouts and resets all bars to purple
-        for (let i = 0; i < this.state.timeouts.length; i++) {
-            clearTimeout(this.state.timeouts[i]);
-        }
-        this.state.timeouts = [];
-        const verticalBars = document.getElementsByClassName("vertical-bar");
-        for (let i = 0; i < verticalBars.length; i++) {
-            verticalBars[i].style.backgroundColor = purple;
-        }
-    }
-
     setDelayInterval() {  // Parses the input into a float to determine delay interval
         let chosenInterval = document.getElementById("delay-interval").value;
-        if (chosenInterval === "") {
+        if (chosenInterval === "") {  // If input is empty, use default value of 2
             chosenInterval = "2";
         }
 
-        chosenInterval = parseFloat(chosenInterval)
+        chosenInterval = parseFloat(chosenInterval)  // Input comes in as a string
 
-        chosenInterval = Math.min(2000, chosenInterval);
+        chosenInterval = Math.min(2000, chosenInterval);  // 1 <= chosenInterval <= 2000
         chosenInterval = Math.max(1, chosenInterval);
 
         this.state.delayInterval = chosenInterval;
     }
 
-    runBeforeSort() {  // Required preprocessing
+    runBeforeSort() {  // Required preprocessing to clear all timeouts and check for delay interval input
         this.pause();
         this.setDelayInterval();
         // this.state.savedState = [...this.state.valuesToSort];
