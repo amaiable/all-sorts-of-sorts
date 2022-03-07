@@ -10,6 +10,8 @@ const green = "#90EE90";
 const purple = "#BD8BDD";
 const red = "#FF0000"
 
+const intervalOptions = [500, 375, 250, 100, 50, 25, 10, 5, 2, 1];
+
 export default class SortingVisualiser extends React.Component {
     constructor(props) {
         super(props);
@@ -71,10 +73,10 @@ export default class SortingVisualiser extends React.Component {
 
         chosenInterval = parseFloat(chosenInterval)  // Input comes in as a string
 
-        chosenInterval = Math.min(2000, chosenInterval);  // 1 <= chosenInterval <= 2000
+        chosenInterval = Math.min(10, chosenInterval);  // 1 <= chosenInterval <= 2000
         chosenInterval = Math.max(1, chosenInterval);
 
-        this.state.delayInterval = chosenInterval;
+        this.state.delayInterval = intervalOptions[chosenInterval - 1];
     }
 
     runBeforeSort() {  // Required preprocessing to clear all timeouts and check for delay interval input
@@ -295,7 +297,7 @@ export default class SortingVisualiser extends React.Component {
                     <Container className="overwrite-display-flex">
                         <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
                         <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button> <br />
-                        <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="2000" placeholder="Animation Speed" />
+                        <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="10" placeholder="Animation Speed" />
                         <Button id="merge-sort" className="sort-button" onClick={() => this.mergeSort()} /*disabled={this.state.sortsDisabled}*/>Merge Sort</Button>
                         <Button id="selection-sort" className="sort-button" onClick={() => this.selectionSort()} /*disabled={this.state.sortsDisabled}*/>Selection Sort</Button>
                         <Button id="insertion-sort" className="sort-button" onClick={() => this.insertionSort()} /*disabled={this.state.sortsDisabled}*/>Insertion Sort</Button>
