@@ -1,5 +1,0 @@
-/*
-Bubble sort pseudocode
-
-
-*/

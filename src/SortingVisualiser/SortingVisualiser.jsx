@@ -1,9 +1,11 @@
 import React from "react";
 import "./SortingVisualiser.css";
-import { performMergeSort } from "../Algos/mergeSort.js"
-import { performSelectionSort } from "../Algos/selectionSort.js"
-import { performInsertionSort } from "../Algos/insertionSort.js"
-import { Navbar, Container, Button, Form, Row, InputGroup } from 'react-bootstrap';
+import { performMergeSort } from "../Animation Algos/mergeSort.js";
+import { performSelectionSort } from "../Animation Algos/selectionSort.js";
+import { performInsertionSort } from "../Animation Algos/insertionSort.js";
+import { performBubbleSort } from "../Animation Algos/bubbleSort.js";
+import { Navbar, Container, Button, Form, Modal } from "react-bootstrap";
+import { SortingModal } from "../Sorting Modal/SortingModal.jsx"
 
 const stickyColour = 250;
 const green = "#90EE90";
@@ -21,6 +23,7 @@ export default class SortingVisualiser extends React.Component {
             barNumber: 100,  // Default number of bars
             delayInterval: 9,  // Default time interval
             sortsDisabled: false,  // Should not be disabled by default
+            showModal: false // Modal should not show by default
         }
     };
 
@@ -57,6 +60,8 @@ export default class SortingVisualiser extends React.Component {
         numBars = Math.min(100, numBars);  // 1 <= numBars <= 100
         numBars = Math.max(1, numBars);
 
+        // TODO: If numBars outside of boundaries, replace the input with the right boundary
+
         for (let i = 0; i < numBars; i++) {  // Pushing random numbers between 5 and 100 (represents percentage height of bar) 
             newValues.push(Math.floor(Math.random() * (100 - 5 + 1) + 5));
         }
@@ -75,6 +80,8 @@ export default class SortingVisualiser extends React.Component {
 
         chosenInterval = Math.min(10, chosenInterval);  // 1 <= chosenInterval <= 2000
         chosenInterval = Math.max(1, chosenInterval);
+
+        // TODO: If chosenInterval outside of boundaries, replace the input with the right boundary
 
         this.state.delayInterval = intervalOptions[chosenInterval - 1];
     }
@@ -108,6 +115,9 @@ export default class SortingVisualiser extends React.Component {
         let insertionSortStyle = document.getElementById("insertion-sort").style;
         insertionSortStyle.opacity = .5;
         insertionSortStyle["pointer-events"] = "none";
+        let bubbleSortStyle = document.getElementById("bubble-sort").style;
+        bubbleSortStyle.opacity = .5;
+        bubbleSortStyle.pointerEvents = "none";
     }
 
     enableButtons() {  // Re-enables buttons and reverts all style changes
@@ -285,6 +295,53 @@ export default class SortingVisualiser extends React.Component {
         this.disableSorts(disableSortsLength);
     }
 
+    // bubbleSort() {
+    //     if (this.state.sortsDisabled) {
+    //         return;
+    //     }
+    //     this.runBeforeSort();
+    //     const [colourChanges, heightChanges] = performBubbleSort(this.state.valuesToSort);
+    //     const n = colourChanges.length;
+
+    //     let delayMultiplier = 0;
+
+    //     const verticalBars = document.getElementsByClassName("vertical-bar");
+
+    //     let heightChangesIndex = 0;
+    //     for (let i = 0; i < colourChanges.length; i++) {
+    //         if (typeof(colourChanges[i]) === "number") {
+    //             const [barA, barB, newBarAHeight, newBarBHeight] = heightChanges[j];
+
+    //             let barAStyle = verticalBars[barA].style;
+    //             let barBStyle = verticalBars[barB].style;
+                
+    //             this.state.timeouts.push(setTimeout(() => {
+    //                 console.log("timeout");
+    //             }));
+                
+    //             heightChangesIndex += 1;
+    //         }
+    //         else {
+    //             let barAStyle = verticalBars[colourChanges[i][0]].style;
+    //             let barBStyle = verticalBars[colourChanges[i][1]].style;
+
+    //             this.state.timeouts.push(setTimeout(() => {
+    //                 barAStyle.backgroundColor = red;
+    //                 barBStyle.backgroundColor = red;
+    //             }));
+    //             delayMultiplier += 1;
+
+    //             this.state.timeouts.push(setTimeout(() => {
+    //                 barAStyle.backgroundColor = purple;
+    //                 barBStyle.backgroundColor = purple;
+    //             }));
+    //             delayMultiplier += 1;
+    //         }
+    //     }
+    //     console.log("count", count)
+    //     console.log("height", heightChanges);
+    // }
+
     render() {
         const values = this.state.valuesToSort;
         const numberOfBars = values.length;
@@ -293,18 +350,29 @@ export default class SortingVisualiser extends React.Component {
         return (
             <div className="app-container">
                 <Navbar bg="dark">
-                    <Navbar.Brand><img className="logo" src="/logo_transparent_cropped.png" /></Navbar.Brand>
+                    <div>
+                        <Navbar.Brand><img className="logo" src="/logo_transparent_cropped.png" /></Navbar.Brand>
+                        <Button id="learn-more" onClick={() => this.setState({showModal: true})}>Learn more about the sorting algorithms here!</Button>
+                    </div>
                     <Container className="overwrite-display-flex">
-                        <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
-                        <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button> <br />
-                        <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="10" placeholder="Animation Speed" />
-                        <Button id="merge-sort" className="sort-button" onClick={() => this.mergeSort()} /*disabled={this.state.sortsDisabled}*/>Merge Sort</Button>
-                        <Button id="selection-sort" className="sort-button" onClick={() => this.selectionSort()} /*disabled={this.state.sortsDisabled}*/>Selection Sort</Button>
-                        <Button id="insertion-sort" className="sort-button" onClick={() => this.insertionSort()} /*disabled={this.state.sortsDisabled}*/>Insertion Sort</Button>
-                        {/*<Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>*/}
+                        <div>
+                            <Form.Control id="num-bars" className="number-input" type="number" min="1" max="100" default-value="100" placeholder="Number of Bars" />
+                            <Button id="generate-values-btn" className="sort-button" onClick={() => this.resetValues()}>Generate New Values</Button>
+                        </div>
+                        <div>
+                            <Form.Control id="delay-interval" type="number" className="number-input" min="1" max="10" placeholder="Animation Speed" />
+                            <Button id="merge-sort" className="sort-button" onClick={() => this.mergeSort()} /*disabled={this.state.sortsDisabled}*/>Merge Sort</Button>
+                            <Button id="selection-sort" className="sort-button" onClick={() => this.selectionSort()} /*disabled={this.state.sortsDisabled}*/>Selection Sort</Button>
+                            <Button id="insertion-sort" className="sort-button" onClick={() => this.insertionSort()} /*disabled={this.state.sortsDisabled}*/>Insertion Sort</Button>
+                            {/*<Button id="bubble-sort" className="sort-button" onClick={() => this.bubbleSort()}>Bubble Sort</Button>*/}
+                            {/*<Button id="pause-btn" className="sort-button" onClick={() => this.pause()}>Pause</Button>*/}
+                        </div>
                     </Container>
                 </Navbar>
                 <div className="bar-container">
+                    <Modal size="lg" show={this.state.showModal} onHide={() => this.setState({showModal: false})}>
+                        <SortingModal />
+                    </Modal>
                     {values.map((value, index) => 
                         <div className="vertical-bar" key={index} style={{height: `${value}%`, width: `${width}%`}} />
                     )}
@@ -314,3 +382,5 @@ export default class SortingVisualiser extends React.Component {
         )
     };
 }
+
+//>

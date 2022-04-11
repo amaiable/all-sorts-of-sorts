@@ -68,7 +68,6 @@ function mergeArrays(array, startIndex, middleIndex, endIndex, auxArray, colourC
     let indexA = startIndex;
     let indexB = middleIndex + 1;
     for (let i = startIndex; i < endIndex + 1; i++) {
-        const animation = {};
         if (indexA > middleIndex) {
             colourChanges.push([indexB, indexB]);
             heightChanges.push([i, array[indexB]]);
